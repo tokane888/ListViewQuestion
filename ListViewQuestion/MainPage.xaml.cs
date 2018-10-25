@@ -1,30 +1,82 @@
-﻿using System;
+﻿using ListViewQuestion.Helpers;
+using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.UI.Xaml;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Text;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-
-// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
 namespace ListViewQuestion
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
     public sealed partial class MainPage : Page
     {
+        public ObservableCollection<Person> People { get; } = new ObservableCollection<Person>();
+
         public MainPage()
         {
             this.InitializeComponent();
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            GenerateSampleData();
+        }
+
+        private void GenerateSampleData()
+        {
+            var random = new Random();
+            for (int i = 0; i < 1000; i++)
+            {
+                People.Add(new Person
+                {
+                    Age = i,
+                    Countries = new List<string> { "China", "India", "USA" },
+                });
+            }
+            People[999].Country = "India";
+        }
+
+        private void CountryList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            StringBuilder sb = new StringBuilder("Added:");
+            foreach (var added in e.AddedItems)
+            {
+                if (added is string country)
+                {
+                    sb.Append($" {country,-5}");
+                }
+            }
+
+            sb.Append(", Removed:");
+            foreach (var removed in e.RemovedItems)
+            {
+                if (removed is string country)
+                {
+                    sb.Append($" {country,-5}");
+                }
+            }
+            Debug.WriteLine(sb);
+        }
+    }
+
+    public class Person : BindableBase
+    {
+        private int _age;
+        public int Age
+        {
+            get => _age;
+            set => SetProperty(ref _age, value);
+        }
+
+        public List<string> Countries { get; set; }
+
+        private string _country;
+        public string Country
+        {
+            get => _country;
+            set => SetProperty(ref _country, value);
         }
     }
 }

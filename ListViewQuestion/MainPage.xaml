@@ -12,7 +12,6 @@
         <ListView.ItemTemplate>
             <DataTemplate x:DataType="local:Person">
                 <StackPanel BorderBrush="Black" BorderThickness="0,0,0,1">
-                    <TextBlock Text="{x:Bind Age, Mode=OneWay}"/>
                     <TextBlock Text="{x:Bind Country, Mode=OneWay}"/>
                     <ListView x:Name="CountryList"
                                 ItemsSource="{x:Bind Countries, Mode=OneWay}"

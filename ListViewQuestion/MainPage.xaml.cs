@@ -26,12 +26,10 @@ namespace ListViewQuestion
 
         private void GenerateSampleData()
         {
-            var random = new Random();
             for (int i = 0; i < 1000; i++)
             {
                 People.Add(new Person
                 {
-                    Age = i,
                     Countries = new List<string> { "China", "India", "USA" },
                 });
             }
@@ -63,13 +61,6 @@ namespace ListViewQuestion
 
     public class Person : BindableBase
     {
-        private int _age;
-        public int Age
-        {
-            get => _age;
-            set => SetProperty(ref _age, value);
-        }
-
         public List<string> Countries { get; set; }
 
         private string _country;
